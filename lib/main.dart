@@ -4,10 +4,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-final String url = 'http://localhost/api';
+import 'SwitchWidget.dart';
+
+final String url = 'http:///api';
 
 Future<Statistic> fetchStatistics() async {
-  final response = await http.get(url+'/statistic');
+  final response = await http.get(url + '/statistic');
   if (response.statusCode == 200) {
     return Statistic.fromJson(jsonDecode(response.body));
   } else {
@@ -16,15 +18,6 @@ Future<Statistic> fetchStatistics() async {
     statistics.environmentMoisture = 0;
     statistics.soilMoisture = 0;
     return statistics;
-  }
-}
-
-void controlPump(String status) async {
-  final http.Response response = await http.post(url + '/pump/'+status);
-  if (response.statusCode > 199 && response.statusCode < 300) {
-    //TODO: przełączć przycisk + zaktualizwować statusy
-  } else {
-    throw Exception('Failed to comunicate with pump');
   }
 }
 
@@ -40,7 +33,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _GrowAppState extends State<MyApp> {
-
   Future<Statistic> futureStatistics;
 
   @override
@@ -58,31 +50,33 @@ class _GrowAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Grow Monitor',
-      theme: ThemeData(
-        primarySwatch: Colors.blue
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Grow Monitor'),
         ),
-        body: Center(
+        body: FutureBuilder<Statistic> (
+        future: futureStatistics,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var statistic = snapshot.data;
+                return Center(
+                  child: Column(
+                    children: [
+                      Text("Temperatura: " +
+                      statistic.temperature.toString() +
+                      "\nWilgotność powietrza: " +
+                      statistic.environmentMoisture.toString() +
+                      "\nWilgotność gleby: " +
+                      statistic.soilMoisture.toString()),
 
-          child: FutureBuilder<Statistic>(
-
-            future: futureStatistics,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var statistic = snapshot.data;
-                return Text("Temperatura: " + statistic.temperature.toString() +
-                    "\nWilgotność powietrza: " +
-                    statistic.environmentMoisture.toString() +
-                    "\nWilgotność gleby: " + statistic.soilMoisture.toString());
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            }
-          ),
+                      SwitchWidget()
+                    ],
+                  ),
+                );
+          }
+          return Center(child: CircularProgressIndicator());
+        }
         ),
       ),
     );
