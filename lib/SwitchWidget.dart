@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 final String url = 'http:///api';
 
 bool switchControl = false;
-var textHolder = 'Pompa wyłączona';
+var textHolder = 'POMPA WYŁĄCZONA';
 
 Future<bool> controlPump(String status) async {
   final http.Response response = await http.post(url + '/pump/' + status);
@@ -29,7 +29,7 @@ class SwitchWidgetClass extends State {
     if(switchControl == false) {
       setState((){
         switchControl = true;
-        textHolder = 'Włączanie pompy';
+        textHolder = 'WŁĄCZANIE POMPY';
       });
 
       bool controlPumpResponse = await (controlPump('ON'));
@@ -38,19 +38,19 @@ class SwitchWidgetClass extends State {
       if (controlPumpResponse == false) {
         setState((){
           switchControl = false;
-          textHolder = 'Nie można podlać';
+          textHolder = 'NIE MOŻNA PODLAĆ';
         });
 
       } else {
         setState((){
           switchControl = true;
-          textHolder = 'Podlano';
+          textHolder = 'PODLANO';
         });
       }
     } else {
       setState((){
         switchControl = false;
-        textHolder = 'Pompa wyłączona';
+        textHolder = 'POMPA WYŁĄCZONA';
       });
     }
   }
@@ -70,9 +70,7 @@ class SwitchWidgetClass extends State {
               inactiveTrackColor: Colors.grey,
             )
         ),
-
-          Text('$textHolder', style: TextStyle(fontSize: 24),)
-
+          Text('$textHolder', style: TextStyle(fontSize: 20, color: Colors.grey[200]))
         ]);
   }
 }

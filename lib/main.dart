@@ -52,33 +52,94 @@ class _GrowAppState extends State<MyApp> {
       title: 'Grow Monitor',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
+        backgroundColor: Colors.grey[900],
         appBar: AppBar(
           title: Text('Grow Monitor'),
         ),
-        body: FutureBuilder<Statistic> (
-        future: futureStatistics,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var statistic = snapshot.data;
+        body: FutureBuilder<Statistic>(
+            future: futureStatistics,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var statistic = snapshot.data;
                 return Center(
                   child: Column(
                     children: [
-                      Text("Temperatura: " +
-                      statistic.temperature.toString() +
-                      "\nWilgotność powietrza: " +
-                      statistic.environmentMoisture.toString() +
-                      "\nWilgotność gleby: " +
-                      statistic.soilMoisture.toString()),
-
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 10),
+                          Image(image: AssetImage('graphics/temp.png'), height: 50, width: 50),
+                          basicText(" TEMPERATURA: "),
+                          basicContainer(statistic.temperature.toString() + "°C"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10, height: 75),
+//                          Image(image: AssetImage('graphics/humidity.png'), height: 30, width: 30),
+                          basicText(" WILGOTNOŚĆ :"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 25, height: 0,),
+                          Image(image: AssetImage('graphics/air.png'), height: 50, width: 50),
+                          basicText("  powietrza: "),
+                          basicContainerLowPadding(statistic.environmentMoisture.toString() + "%"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 25, height: 0,),
+                          Image(image: AssetImage('graphics/soil.png'), height: 50, width: 50),
+                          basicText(" gleby: "),
+                          basicContainerLowPadding(statistic.soilMoisture.toString() + "%"),
+                        ],
+                      ),
+                      SizedBox(height: 30),
                       SwitchWidget()
                     ],
                   ),
                 );
-          }
-          return Center(child: CircularProgressIndicator());
-        }
-        ),
+              }
+              return Center(child: CircularProgressIndicator());
+            }),
       ),
     );
   }
+}
+
+Text basicText(String text) {
+  return Text(text,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+          color: Colors.grey[200],
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Open Sans',
+          fontStyle: FontStyle.italic));
+}
+
+Container basicContainer(String text) {
+  return Container(
+    margin: const EdgeInsets.all(15.0),
+    padding: const EdgeInsets.all(12.0),
+    decoration: BoxDecoration(
+      border: Border.all(width: 3.0),
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
+    child: basicText(text),
+  );
+}
+
+Container basicContainerLowPadding(String text) {
+  return Container(
+    margin: const EdgeInsets.all(3.0),
+    padding: const EdgeInsets.all(12.0),
+    decoration: BoxDecoration(
+      border: Border.all(width: 3.0),
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
+    child: basicText(text),
+  );
 }
