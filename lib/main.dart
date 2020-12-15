@@ -6,7 +6,7 @@ import 'dart:async';
 
 import 'SwitchWidget.dart';
 
-final String url = 'http:///api';
+final String url = 'http://192.168.1.27/api';
 
 Future<Statistic> fetchStatistics() async {
   final response = await http.get(url + '/statistic');
@@ -114,7 +114,7 @@ Text basicText(String text) {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
           color: Colors.grey[200],
-          fontSize: 24,
+          fontSize: 22,
           fontWeight: FontWeight.w500,
           fontFamily: 'Open Sans',
           fontStyle: FontStyle.italic));

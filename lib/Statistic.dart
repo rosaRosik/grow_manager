@@ -1,7 +1,7 @@
 class Statistic {
-   int temperature;
-   int environmentMoisture;
-   int soilMoisture;
+   double temperature;
+   double environmentMoisture;
+   double soilMoisture;
 
   Statistic({this.temperature, this.environmentMoisture, this.soilMoisture});
 

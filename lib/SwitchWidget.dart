@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-final String url = 'http:///api';
+final String url = 'http://192.168.1.27/api';
 
 bool switchControl = false;
 var textHolder = 'POMPA WYŁĄCZONA';
