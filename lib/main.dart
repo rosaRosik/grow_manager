@@ -3,6 +3,7 @@ import 'package:growapp/Statistic.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'SwitchWidget.dart';
 
@@ -33,11 +34,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _GrowAppState extends State<MyApp> {
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Future<Statistic> futureStatistics;
+
+  _register() {
+    _firebaseMessaging.getToken().then((token) => print(token));
+  }
 
   @override
   void initState() {
     super.initState();
+    _register();
     futureStatistics = fetchStatistics();
     Timer.periodic(Duration(seconds: 10), (Timer timer) {
       setState(() {
