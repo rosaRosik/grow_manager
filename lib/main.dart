@@ -22,6 +22,11 @@ Future<Statistic> fetchStatistics() async {
   }
 }
 
+void savePushToken(String token) async {
+  final response = await http.post(url + '/pushToken/' + token);
+  print(response);
+}
+
 void main() {
   runApp(MyApp());
 }
@@ -39,7 +44,7 @@ class _GrowAppState extends State<MyApp> {
   Future<Statistic> futureStatistics;
 
   _register() {
-    _firebaseMessaging.getToken().then((token) => print(token));
+    _firebaseMessaging.getToken().then((token) => savePushToken(token));
   }
 
   @override
